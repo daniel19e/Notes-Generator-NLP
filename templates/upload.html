@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF Upload and Text Display</title>
+    <script>
+      async function uploadFile() {
+        let formData = new FormData();
+        formData.append("file", document.getElementById("fileInput").files[0]);
+
+        try {
+          const response = await fetch("/api/extract-text", {
+            method: "POST",
+            body: formData,
+          });
+          const result = await response.json();
+          if (response.ok) {
+            document.getElementById("textOutput").textContent = result.text;
+          } else {
+            document.getElementById("textOutput").textContent = result.error;
+          }
+        } catch (error) {
+          document.getElementById("textOutput").textContent =
+            "Error calling the API." + error;
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Upload a PDF to extract text</h1>
+    <input type="file" id="fileInput" />
+    <button onclick="uploadFile()">Upload and Extract Text</button>
+    <pre id="textOutput"></pre>
+  </body>
+</html>
