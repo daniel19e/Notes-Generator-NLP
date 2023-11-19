@@ -3,3 +3,4 @@
 /.pytest_cache
 /.DS_Store
 *.pyc
+/final_model

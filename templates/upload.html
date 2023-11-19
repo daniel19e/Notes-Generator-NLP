@@ -4,6 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PDF Upload and Text Display</title>
+    <style>
+      #textOutput {
+        white-space: pre-wrap; /* Wraps the text */
+        word-wrap: break-word; /* Breaks long words */
+        overflow-wrap: break-word; /* Ensures the text fits within the container */
+        max-width: 100%; /* Sets maximum width of the text container */
+        padding: 10px; /* Optional: Adds some padding inside the text container */
+        border: 1px solid #ddd; /* Optional: Adds a border around the text container */
+        background-color: #f9f9f9; /* Optional: Sets a background color for the text container */
+        margin-top: 20px; /* Optional: Adds some space above the text container */
+      }
+    </style>
     <script>
       async function uploadFile() {
         let formData = new FormData();
