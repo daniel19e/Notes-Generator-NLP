@@ -17,7 +17,7 @@ def get_embedding(text):
 def calculate_paragraph_importance(doc, window):
     doc_embedding = get_embedding(doc)
     window_embedding = get_embedding(window)
-    return cosine_similarity([doc_embedding], [window_embedding])
+    return cosine_similarity([doc_embedding], [window_embedding])[0][0]
 
 def capitalize(page):
     sentences = sentence_tokenizer.tokenize(page)
@@ -54,14 +54,14 @@ def sliding_window_summarize(text, window_size=300):
 def summarize_article(pdf):
     bullet_points = []
     full_text = ""
+    similarity_threshold = 0.2
     for page in pdf.pages:
         extracted = page.extract_text(x_tolerance=1) or ""
         full_text += " " + extracted
 
     window_summaries = sliding_window_summarize(full_text)
-    window_summaries = [w + " similarity: " + calculate_paragraph_importance(w) for w in window_summaries]
     bullet_points.extend(window_summaries)
 
-    return "• " + "\n• ".join(bullet_points)
+    return "• " + "\n• ".join([b for b in bullet_points if calculate_paragraph_importance(full_text, b) >= similarity_threshold])
 
 
