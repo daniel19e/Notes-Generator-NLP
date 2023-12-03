@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 import pdfplumber
 from summarize import summarize_article
+import notes_by_rank
        
 api_blueprint = Blueprint("api_blueprint", __name__)
 
@@ -22,14 +23,7 @@ def extract_text():
     if file and allowed_file(file.filename):
         try:
             with pdfplumber.open(file) as pdf:
-                text = ""
-                for page in pdf.pages:
-                    extracted = page.extract_text()
-                    summary = summarize_article(extracted)
-                    text += "• "
-                    text += summary or ""
-                    text += "\n"
-    
+                text = notes_by_rank.summarize_article(pdf)
             return jsonify({"text": text})
         except Exception as e:
             return jsonify({"error": str(e)}), 500
